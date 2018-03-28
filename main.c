@@ -103,6 +103,7 @@ void main(void)
        * Do not call any stack commands before receiving the boot event.
        * Here the system is set to start advertising immediately after boot procedure. */
       case gecko_evt_system_boot_id:
+      	LOGI(RTT_CTRL_CLEAR"Compiled  %s %s\n", (uint32_t)__DATE__, (uint32_t)__TIME__);
       	LOGD("Booted.");
         /* Set advertising parameters. 100ms advertisement interval.
          * The first parameter is advertising set handle

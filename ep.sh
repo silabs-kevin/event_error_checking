@@ -1,0 +1,1 @@
+$scmd flash GNU\ ARM\ v4.9.3.\ -\ Default/*.hex 
