@@ -39,6 +39,7 @@
 #endif
 
 #include "log.h"
+#include "event_log.h"
 /***********************************************************************************************//**
  * @addtogroup Application
  * @{
@@ -99,7 +100,7 @@ void main(void)
 
     /* Check for stack event. */
     evt = gecko_wait_event();
-
+    log_events(evt);
     /* Handle events */
     switch (BGLIB_MSG_ID(evt->header)) {
       /* This boot event is generated when the system boots up after reset.
@@ -107,7 +108,7 @@ void main(void)
        * Here the system is set to start advertising immediately after boot procedure. */
       case gecko_evt_system_boot_id:
 //      	TRY_OUT_ALL_COLORS();
-      	LOGD("Booted.");
+//      	LOGD("Booted.");
         /* Set advertising parameters. 100ms advertisement interval.
          * The first parameter is advertising set handle
          * The next two parameters are minimum and maximum advertising interval, both in
@@ -117,14 +118,14 @@ void main(void)
 
         /* Start general advertising and enable connections. */
         gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
-        LOGD("ADV started.");
+//        LOGD("ADV started.");
         break;
 
       case gecko_evt_le_connection_opened_id:
-      	LOGD("Connection Opened.");
+//      	LOGD("Connection Opened.");
       	break;
       case gecko_evt_le_connection_closed_id:
-      	LOGE("Connection dropped. Reason = 0x%04x", evt->data.evt_le_connection_closed.reason);
+//      	LOGE("Connection dropped. Reason = 0x%04x", evt->data.evt_le_connection_closed.reason);
 //      	error_checking(evt->data.evt_le_connection_closed.reason);
         /* Check if need to boot to dfu mode */
         if (boot_to_dfu) {
