@@ -4,12 +4,14 @@
 #define	LE_CONNECTION_OPEN_EVT "Connection Opened"
 #define LE_CONNECTION_CLOSED_EVT	"Connection Closed"
 #define LE_CONNECTION_UPDATE_EVT	"Connection Parameters Updated"
+#define TEST_DTM_COMPLETED				"DTM Completed"
 #define ALL_FIELDS		"All Fields "
 #define NO_INFO				""
 
 void log_events(struct gecko_cmd_packet* evt){
   /* Handle events */
   switch (BGLIB_MSG_ID(evt->header)) {
+
 #if (SYSTEM == 1)
 #undef EVT_CATEGORY
 #define EVT_CATEGORY	"[SYSTEM]: "
@@ -27,6 +29,7 @@ void log_events(struct gecko_cmd_packet* evt){
     	EVT_LOG_N();
       break;
 #endif
+
 #if (LE_CONNECTION == 1)
 #undef EVT_CATEGORY
 #define EVT_CATEGORY	"[LE_CONNECTION]: "
@@ -57,6 +60,19 @@ void log_events(struct gecko_cmd_packet* evt){
 											evt->data.evt_le_connection_parameters.latency, \
 											evt->data.evt_le_connection_parameters.timeout*10);
     	/* TODO: There are still 2 parameters may need to be handled */
+    	EVT_LOG_N();
+    	break;
+#endif
+
+#if (TEST == 1)
+#undef EVT_CATEGORY
+#define EVT_CATEGORY	"[TEST]: "
+    case gecko_evt_test_dtm_completed_id:
+    	EVT_LOG_I(TEST_DTM_COMPLETED, "Result = ");
+    	error_checking(evt->data.evt_test_dtm_completed.result, 1);
+    	EVT_LOG_N();
+    	EVT_LOG_I(TEST_DTM_COMPLETED, "Number of Packets = %d", \
+    			evt->data.evt_test_dtm_completed.number_of_packets);
     	EVT_LOG_N();
     	break;
 #endif

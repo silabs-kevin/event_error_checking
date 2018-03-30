@@ -10,8 +10,10 @@ void log_out(uint8_t direct, const char *msg){
 }
 
 uint16_t error_checking(uint16_t error_code, uint8_t directly){
-	if(error_code == bg_err_success)
+	if(error_code == bg_err_success){
+		LOG("Success");
 		return error_code;
+	}
 	switch(error_code){
 		case bg_err_hardware_ps_store_full:
 			log_out(directly, "Flash reserved for PS store is full");
@@ -21,6 +23,9 @@ uint16_t error_checking(uint16_t error_code, uint8_t directly){
 			break;
 		case bg_err_invalid_conn_handle:
 			log_out(directly, "Invalid GATT connection handle");
+			break;
+		case bg_err_bt_connection_timeout:
+			log_out(directly, "Link supervision timeout has expired");
 			break;
 		case bg_err_waiting_response:
 			log_out(directly, "Waiting response from GATT server to previous procedure.");
@@ -84,6 +89,7 @@ uint16_t error_checking(uint16_t error_code, uint8_t directly){
 			break;
 		default:
 			log_out(directly, "Error needs to be added");
+			LOG("Error code = 0x%04X", error_code);
 			break;
 	}
 	return error_code;

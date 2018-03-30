@@ -118,9 +118,21 @@ void main(void)
 
         /* Start general advertising and enable connections. */
         gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
-//        LOGD("ADV started.");
+        LOGD("ADV started.");
+
+//        gecko_cmd_test_dtm_tx(test_pkt_00001111, 20, 0, test_phy_1m);
+//        gecko_cmd_hardware_set_soft_timer(32768*3, 1, 1);
         break;
 
+      case gecko_evt_hardware_soft_timer_id:
+      	switch(evt->data.evt_hardware_soft_timer.handle){
+//      		case 1:
+//      			gecko_cmd_test_dtm_end();
+//      			break;
+      		default:
+      			break;
+      	}
+      	break;
       case gecko_evt_le_connection_opened_id:
 //      	LOGD("Connection Opened.");
       	break;
@@ -134,6 +146,7 @@ void main(void)
         } else {
           /* Restart advertising after client has disconnected */
           gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
+          LOGD("ADV started.");
         }
         break;
 
