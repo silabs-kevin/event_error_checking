@@ -71,6 +71,7 @@
 									<listOptionValue builtIn="false" value="HAL_CONFIG=1"/>
 									<listOptionValue builtIn="false" value="EFR32BG13P632F512GM48=1"/>
 								</option>
+								<option id="gnu.c.compiler.option.optimization.level.742310559" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
 								<inputType id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input.656258641" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.cpp.compiler.base.55391864" name="GNU ARM C++ Compiler" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.cpp.compiler.base"/>

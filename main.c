@@ -89,7 +89,10 @@ void main(void)
 
   // Initialize stack
   gecko_init(&config);
+
   INIT_LOG();
+  LOGI(RTT_CTRL_CLEAR"Compiled  %s %s\n", (uint32_t)__DATE__, (uint32_t)__TIME__);
+
   while (1) {
     /* Event pointer for handling events */
     struct gecko_cmd_packet* evt;
@@ -103,7 +106,7 @@ void main(void)
        * Do not call any stack commands before receiving the boot event.
        * Here the system is set to start advertising immediately after boot procedure. */
       case gecko_evt_system_boot_id:
-      	LOGI(RTT_CTRL_CLEAR"Compiled  %s %s\n", (uint32_t)__DATE__, (uint32_t)__TIME__);
+//      	TRY_OUT_ALL_COLORS();
       	LOGD("Booted.");
         /* Set advertising parameters. 100ms advertisement interval.
          * The first parameter is advertising set handle
@@ -122,6 +125,7 @@ void main(void)
       	break;
       case gecko_evt_le_connection_closed_id:
       	LOGE("Connection dropped. Reason = 0x%04x", evt->data.evt_le_connection_closed.reason);
+//      	error_checking(evt->data.evt_le_connection_closed.reason);
         /* Check if need to boot to dfu mode */
         if (boot_to_dfu) {
           /* Enter to DFU OTA mode */

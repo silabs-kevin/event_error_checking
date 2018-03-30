@@ -5,8 +5,11 @@
 #include "retargetserial.h"
 #include "SEGGER_RTT.h"
 /* High level defines, needs user to decide */
-#define LOG_LEVEL								LVL_VERBOSE
+#define LOG_LEVEL									LVL_VERBOSE
 #define LOG_PORT									SEGGER_JLINK_VIEWER
+
+#define PORT_VCOM									1
+#define SEGGER_JLINK_VIEWER				2
 
 #define NO_LOG									0
 #define LVL_ERROR								1
@@ -15,18 +18,24 @@
 #define LVL_DEBUG								4
 #define LVL_VERBOSE							5
 
-
-#define PORT_VCOM									1
-#define SEGGER_JLINK_VIEWER				2
 #if (LOG_PORT == SEGGER_JLINK_VIEWER)
-#define INIT_LOG()						SEGGER_RTT_Init()
+#define INIT_LOG()							SEGGER_RTT_Init()
 #define LOG(...)								SEGGER_RTT_printf(0, __VA_ARGS__)
 #elif (LOG_PORT == PORT_VCOM)
 #define INIT_LOG()							RETARGET_SerialInit()
 #define LOG(...)								printf(__VA_ARGS__)
 #else
+#define INIT_LOG()
 #define LOG(...)
 #endif
+
+#define TRY_OUT_ALL_COLORS()				\
+	do{																\
+		for(uint8_t i=1; i<8; i++){			\
+			SEGGER_RTT_printf(0, "[2;3%dm""Normal color. Test For Log out...\r\n", i);	\
+			SEGGER_RTT_printf(0, "[1;3%dm""Bright color. Test For Log out...\r\n", i);	\
+		}																																							\
+	}while(0)
 
 /* Error */
 #define LOGE(_prefix_, ...)				\
@@ -48,7 +57,7 @@
 #define LOGI(_prefix_, ...)				\
 	do{															\
 		if(LOG_LEVEL >=  LVL_INFO){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_BLUE"INFO    -> " _prefix_ "\r\n"RTT_CTRL_RESET, ##__VA_ARGS__);			\
+			LOG(RTT_CTRL_TEXT_BRIGHT_CYAN"INFO    -> " _prefix_ "\r\n"RTT_CTRL_RESET, ##__VA_ARGS__);			\
 		}																																																\
 }while(0)
 

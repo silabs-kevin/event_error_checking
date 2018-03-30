@@ -1,4 +1,4 @@
-1. Copy the folder "third_party", file <log.h>.
+1. Copy the folder "third_party", file <log.h> <erro_checking.c>.
 2. Add below lines to main.c
 	#include "log.h"
 	...
