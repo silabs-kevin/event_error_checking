@@ -1,6 +1,7 @@
 #include "event_log.h"
 
 #define BOOT_EVT			"System boot"
+#define EXTERNAL_SIGNAL_EVT				"External signal"
 #define	LE_CONNECTION_OPEN_EVT "Connection Opened"
 #define LE_CONNECTION_CLOSED_EVT	"Connection Closed"
 #define LE_CONNECTION_UPDATE_EVT	"Connection Parameters Updated"
@@ -28,6 +29,11 @@ void log_events(struct gecko_cmd_packet* evt){
 					evt->data.evt_system_boot.hash);
     	EVT_LOG_N();
       break;
+
+    case gecko_evt_system_external_signal_id:
+    	EVT_LOG_I(EXTERNAL_SIGNAL_EVT, "External signals = 0x%08X", \
+    			evt->data.evt_system_external_signal.extsignals);
+    	break;
 #endif
 
 #if (LE_CONNECTION == 1)
@@ -61,6 +67,14 @@ void log_events(struct gecko_cmd_packet* evt){
 											evt->data.evt_le_connection_parameters.timeout*10);
     	/* TODO: There are still 2 parameters may need to be handled */
     	EVT_LOG_N();
+    	break;
+#endif
+
+#if (HARDWARE == 1)
+#undef EVT_CATEGORY
+#define EVT_CATEGORY	"[HARDWARE]: "
+    case gecko_evt_hardware_soft_timer_id:
+    	// TODO
     	break;
 #endif
 
