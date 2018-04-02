@@ -37,6 +37,7 @@
 #define TEST									1
 #define USER									1
 
+
 #define EVT_LOG_N()											\
 	do{																		\
 		LOG("\r\n");												\
@@ -62,6 +63,7 @@
 			LOG(EVT_VERBOSE_PREFIX "<" _evt_name_ "> - " _attached_, ##__VA_ARGS__);	\
 		}																									\
 	}while(0)
+
 
 void log_events(struct gecko_cmd_packet* evt);
 #endif

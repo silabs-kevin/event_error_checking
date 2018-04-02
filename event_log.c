@@ -5,6 +5,10 @@
 #define	LE_CONNECTION_OPEN_EVT "Connection Opened"
 #define LE_CONNECTION_CLOSED_EVT	"Connection Closed"
 #define LE_CONNECTION_UPDATE_EVT	"Connection Parameters Updated"
+/* Gatt Server */
+#define GATT_SERVER_CHARACTERISTIC_STATUS	"Gatt Server Characteristic Status"
+#define GATT_SERVER_ATT_VALUE							"Gatt Server Attribute Value"
+#define GATT_SERVER_READ_REQUEST					"Gatt Server Read Request"
 #define TEST_DTM_COMPLETED				"DTM Completed"
 #define ALL_FIELDS		"All Fields "
 #define NO_INFO				""
@@ -70,6 +74,47 @@ void log_events(struct gecko_cmd_packet* evt){
     	break;
 #endif
 
+#if (GATT_SERVER == 1)
+#undef EVT_CATEGORY
+#define EVT_CATEGORY	"[GATT_SERVER]: "
+    case gecko_evt_gatt_server_characteristic_status_id:
+    	EVT_LOG_I(GATT_SERVER_CHARACTERISTIC_STATUS, "Connection Handle = 0x%02x, Characteristic = 0x%04x, Type = %s, Value = 0x%04x", \
+    			evt->data.evt_gatt_server_characteristic_status.connection, \
+					evt->data.evt_gatt_server_characteristic_status.characteristic, \
+					evt->data.evt_gatt_server_characteristic_status.status_flags ==1?"Gatt server client config":"Confirmation", \
+					evt->data.evt_gatt_server_characteristic_status.client_config_flags);
+    	EVT_LOG_N();
+    	break;
+    case gecko_evt_gatt_server_attribute_value_id:
+    	EVT_LOG_I(GATT_SERVER_ATT_VALUE, "Connection Handle = 0x%02x, Attribute = 0x%04x, Op_Code = 0x%02x, Offset = 0x%04x, Value = ", \
+    	    evt->data.evt_gatt_server_attribute_value.connection, \
+    			evt->data.evt_gatt_server_attribute_value.attribute, \
+    			evt->data.evt_gatt_server_attribute_value.att_opcode, \
+    			evt->data.evt_gatt_server_attribute_value.offset);
+    	UINT8_ARRAY_DUMP(evt->data.evt_gatt_server_attribute_value.value.data, evt->data.evt_gatt_server_attribute_value.value.len);
+    	EVT_LOG_N();
+    	break;
+    case gecko_evt_gatt_server_execute_write_completed_id:
+    	break;
+    case gecko_evt_gatt_server_user_read_request_id:
+    	EVT_LOG_I(GATT_SERVER_READ_REQUEST, "Connection Handle = 0x%02x, Characteristic = 0x%04x, Op_Code = 0x%02x, Offset = 0x%04x", \
+    	    evt->data.evt_gatt_server_user_read_request.connection, \
+    	    evt->data.evt_gatt_server_user_read_request.characteristic, \
+    	    evt->data.evt_gatt_server_user_read_request.att_opcode, \
+    	    evt->data.evt_gatt_server_user_read_request.offset);
+    	EVT_LOG_N();
+    	break;
+    case gecko_evt_gatt_server_user_write_request_id:
+    	EVT_LOG_I(GATT_SERVER_ATT_VALUE, "Connection Handle = 0x%02x, Characteristic = 0x%04x, Op_Code = 0x%02x, Offset = 0x%04x, Value = ", \
+    	    evt->data.evt_gatt_server_user_write_request.connection, \
+    	    evt->data.evt_gatt_server_user_write_request.characteristic, \
+    	    evt->data.evt_gatt_server_user_write_request.att_opcode, \
+    	    evt->data.evt_gatt_server_user_write_request.offset);
+    	UINT8_ARRAY_DUMP(evt->data.evt_gatt_server_user_write_request.value.data, evt->data.evt_gatt_server_user_write_request.value.len);
+    	EVT_LOG_N();
+    	break;
+#endif
+
 #if (HARDWARE == 1)
 #undef EVT_CATEGORY
 #define EVT_CATEGORY	"[HARDWARE]: "
@@ -90,13 +135,6 @@ void log_events(struct gecko_cmd_packet* evt){
     	EVT_LOG_N();
     	break;
 #endif
-    /* Events related to OTA upgrading
-       ----------------------------------------------------------------------------- */
-
-    /* Check if the user-type OTA Control Characteristic was written.
-     * If ota_control was written, boot the device into Device Firmware Upgrade (DFU) mode. */
-    case gecko_evt_gatt_server_user_write_request_id:
-      break;
 
     default:
 
