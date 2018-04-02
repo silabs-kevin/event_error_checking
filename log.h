@@ -29,6 +29,12 @@
 #define LOG(...)
 #endif
 
+#define UINT8_ARRAY_DUMP(array_base, array_size)				\
+	do {                                                                           \
+        for (int i = 0; i<(array_size); i++)                                       \
+            LOG("%02X ", ((char*)(array_base))[i]);\
+	} while(0)
+
 #define TRY_OUT_ALL_COLORS()				\
 	do{																\
 		for(uint8_t i=1; i<8; i++){			\
@@ -36,6 +42,12 @@
 			SEGGER_RTT_printf(0, "[1;3%dm""Bright color. Test For Log out...\r\n", i);	\
 		}																																							\
 	}while(0)
+
+
+#define LOG_ERROR_MSG(_prefix_, ...)				\
+	do{															\
+			LOG(RTT_CTRL_TEXT_BRIGHT_RED _prefix_, ##__VA_ARGS__);			\
+}while(0)
 
 /* Error */
 #define LOGE(_prefix_, ...)				\
@@ -77,7 +89,7 @@
 		}																																																\
 }while(0)
 
-uint16_t error_checking(uint16_t error_code);
+uint16_t error_checking(uint16_t error_code, uint8_t directly);
 
 #define ERROR_ADDRESSING()						\
 	do{																	\
