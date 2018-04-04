@@ -37,6 +37,7 @@ void log_events(struct gecko_cmd_packet* evt){
     case gecko_evt_system_external_signal_id:
     	EVT_LOG_I(EXTERNAL_SIGNAL_EVT, "External signals = 0x%08X", \
     			evt->data.evt_system_external_signal.extsignals);
+    	EVT_LOG_N();
     	break;
 #endif
 
