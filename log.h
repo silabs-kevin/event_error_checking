@@ -43,7 +43,6 @@
 		}																																							\
 	}while(0)
 
-
 #define LOG_ERROR_MSG(_prefix_, ...)				\
 	do{															\
 			LOG(RTT_CTRL_TEXT_BRIGHT_RED _prefix_, ##__VA_ARGS__);			\
