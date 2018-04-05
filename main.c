@@ -125,8 +125,7 @@ void main(void) {
 			break;
 
 			case gecko_evt_gatt_server_characteristic_status_id:
-				if (evt->data.evt_gatt_server_characteristic_status.status_flags == 1) {
-
+				if (evt->data.evt_gatt_server_characteristic_status.characteristic == gattdb_indicate && evt->data.evt_gatt_server_characteristic_status.status_flags == 1) {
 					if (evt->data.evt_gatt_server_characteristic_status.client_config_flags == 2) {
 						gecko_cmd_hardware_set_soft_timer(32768 * 3, 1, 0);
 					} else {
