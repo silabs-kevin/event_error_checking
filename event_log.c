@@ -1,29 +1,33 @@
 #include "event_log.h"
 
-#define BOOT_EVT			"System boot"
-#define EXTERNAL_SIGNAL_EVT				"External signal"
-#define	LE_CONNECTION_OPEN_EVT "Connection Opened"
-#define LE_CONNECTION_CLOSED_EVT	"Connection Closed"
-#define LE_CONNECTION_UPDATE_EVT	"Connection Parameters Updated"
+/* System */
+#define SYSTEM_BOOT_EVT																"System boot"
+#define EXSYSTEM_TERNAL_SIGNAL_EVT										"External signal"
+/* Bluetooth LE Connection */
+#define	LE_CONNECTION_OPEN_EVT 												"Connection Opened"
+#define LE_CONNECTION_CLOSED_EVT											"Connection Closed"
+#define LE_CONNECTION_UPDATE_EVT											"Connection Parameters Updated"
+#define LE_CONNECTION_RSSI														"Connection RSSI"
 /* Gatt Server */
-#define GATT_SERVER_CHARACTERISTIC_STATUS	"Gatt Server Characteristic Status"
-#define GATT_SERVER_ATT_VALUE							"Gatt Server Attribute Value"
-#define GATT_SERVER_READ_REQUEST					"Gatt Server Read Request"
-#define TEST_DTM_COMPLETED				"DTM Completed"
-#define ALL_FIELDS		"All Fields "
-#define NO_INFO				""
+#define GATT_SERVER_CHARACTERISTIC_STATUS							"Gatt Server Characteristic Status"
+#define GATT_SERVER_ATT_VALUE													"Gatt Server Attribute Value"
+#define GATT_SERVER_READ_REQUEST											"Gatt Server Read Request"
+/* DTM */
+#define TEST_DTM_COMPLETED														"DTM Completed"
+
+#define COMMANDS_NOT_ADDED														"Command not added"
+#define NO_INFO																				""
 
 void log_events(struct gecko_cmd_packet* evt){
   /* Handle events */
   switch (BGLIB_MSG_ID(evt->header)) {
-
 #if (SYSTEM == 1)
 #undef EVT_CATEGORY
 #define EVT_CATEGORY	"[SYSTEM]: "
     case gecko_evt_system_boot_id:
-    	EVT_LOG_C(BOOT_EVT, NO_INFO);
+    	EVT_LOG_C(SYSTEM_BOOT_EVT, NO_INFO);
     	EVT_LOG_N();
-    	EVT_LOG_V(BOOT_EVT, "Major = 0x%04x, Minor = 0x%04x, Patch = 0x%04x, Build = %ld, Bootloader = 0x%08x, Hw = 0x%04x, Hash = 0x%08x", \
+    	EVT_LOG_V(SYSTEM_BOOT_EVT, "Major = 0x%04x, Minor = 0x%04x, Patch = 0x%04x, Build = %ld, Bootloader = 0x%08x, Hw = 0x%04x, Hash = 0x%08x", \
     			evt->data.evt_system_boot.major, \
     			evt->data.evt_system_boot.minor, \
 					evt->data.evt_system_boot.patch, \
@@ -35,8 +39,9 @@ void log_events(struct gecko_cmd_packet* evt){
       break;
 
     case gecko_evt_system_external_signal_id:
-    	EVT_LOG_I(EXTERNAL_SIGNAL_EVT, "External signals = 0x%08X", \
+    	EVT_LOG_I(EXSYSTEM_TERNAL_SIGNAL_EVT, "External signals = 0x%08X", \
     			evt->data.evt_system_external_signal.extsignals);
+    	EVT_LOG_N();
     	break;
 #endif
 
@@ -72,7 +77,17 @@ void log_events(struct gecko_cmd_packet* evt){
     	/* TODO: There are still 2 parameters may need to be handled */
     	EVT_LOG_N();
     	break;
+    case gecko_evt_le_connection_rssi_id:
+    	// Status parameter???
+    	EVT_LOG_I(LE_CONNECTION_RSSI, "Handle = 0x%02x, Rssi = %ddBm", \
+    			evt->data.evt_le_connection_rssi.connection, \
+					evt->data.evt_le_connection_rssi.rssi);
+    	EVT_LOG_N();
+    	break;
+    case gecko_evt_le_connection_phy_status_id:
+    	break;
 #endif
+
 
 #if (GATT_SERVER == 1)
 #undef EVT_CATEGORY
@@ -137,7 +152,8 @@ void log_events(struct gecko_cmd_packet* evt){
 #endif
 
     default:
-
+    	EVT_LOG_V(COMMANDS_NOT_ADDED, "Header = 0x%08x", BGLIB_MSG_ID(evt->header));
+    	EVT_LOG_N();
       break;
   }
 }
