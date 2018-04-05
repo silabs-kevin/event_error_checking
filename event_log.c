@@ -133,9 +133,9 @@ void log_events(struct gecko_cmd_packet* evt){
 #if (HARDWARE == 1)
 #undef EVT_CATEGORY
 #define EVT_CATEGORY	"[HARDWARE]: "
-    case gecko_evt_hardware_soft_timer_id:
+//    case gecko_evt_hardware_soft_timer_id:
     	// TODO
-    	break;
+//    	break;
 #endif
 
 #if (TEST == 1)

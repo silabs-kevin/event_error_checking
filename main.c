@@ -121,6 +121,7 @@ void main(void) {
 				gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
 				LOGD("ADV started.");
 
+				gecko_cmd_hardware_set_soft_timer(32768*3, 2, 1);
 			break;
 
 			case gecko_evt_gatt_server_characteristic_status_id:
@@ -144,8 +145,9 @@ void main(void) {
 						struct gecko_msg_system_get_random_data_rsp_t *ret = gecko_cmd_system_get_random_data(1);
 						gecko_cmd_gatt_server_send_characteristic_notification(0xFF, gattdb_indicate, 1, ret->data.data);
 					}
-
 					break;
+					case 2:
+						break;
 					default:
 					break;
 				}
