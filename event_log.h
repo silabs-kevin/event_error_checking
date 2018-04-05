@@ -3,6 +3,7 @@
 
 #include "log.h"
 #include "native_gecko.h"
+
 #define EVENT_LOG_LEVEL				VERBOSE
 
 #define NO_EVENT_LOG					0
@@ -19,6 +20,7 @@
 #define FUNCTION							""
 #define EVT_CATEGORY					""
 
+/*FUNCTION Macro doesn't be used yet */
 #define EVT_CRITICAL_PREFIX		CRITICAL_COLOR FUNCTION EVT_CATEGORY
 #define EVT_IMPORTANT_PREFIX	IMPORTANT_COLOR FUNCTION EVT_CATEGORY
 #define EVT_VERBOSE_PREFIX		VERBOSE_COLOR FUNCTION EVT_CATEGORY
@@ -43,6 +45,9 @@
 		LOG("\r\n");												\
 	}while(0)															\
 
+/**
+ * Critical events
+ */
 #define EVT_LOG_C(_evt_name_, _attached_, ...)				\
 	do{																									\
 		if(EVENT_LOG_LEVEL >= CRITICAL){									\
@@ -50,6 +55,9 @@
 		}																									\
 	}while(0)
 
+/**
+ * Important events
+ */
 #define EVT_LOG_I(_evt_name_, _attached_, ...)				\
 	do{																									\
 		if(EVENT_LOG_LEVEL >= IMPORTANT){									\
@@ -57,6 +65,9 @@
 		}																									\
 	}while(0)
 
+/**
+ * Verbose events
+ */
 #define EVT_LOG_V(_evt_name_, _attached_, ...)				\
 	do{																									\
 		if(EVENT_LOG_LEVEL >= VERBOSE){									\

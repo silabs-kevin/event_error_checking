@@ -1,17 +1,17 @@
 #include "event_log.h"
 
 /* System */
-#define SYSTEM_BOOT_EVT																"System boot"
+#define SYSTEM_BOOT_EVT																"Boot"
 #define EXSYSTEM_TERNAL_SIGNAL_EVT										"External signal"
 /* Bluetooth LE Connection */
-#define	LE_CONNECTION_OPEN_EVT 												"Connection Opened"
-#define LE_CONNECTION_CLOSED_EVT											"Connection Closed"
-#define LE_CONNECTION_UPDATE_EVT											"Connection Parameters Updated"
-#define LE_CONNECTION_RSSI														"Connection RSSI"
+#define	LE_CONNECTION_OPEN_EVT 												"Opened"
+#define LE_CONNECTION_CLOSED_EVT											"Closed"
+#define LE_CONNECTION_UPDATE_EVT											"Parameters Updated"
+#define LE_CONNECTION_RSSI														"RSSI"
 /* Gatt Server */
-#define GATT_SERVER_CHARACTERISTIC_STATUS							"Gatt Server Characteristic Status"
-#define GATT_SERVER_ATT_VALUE													"Gatt Server Attribute Value"
-#define GATT_SERVER_READ_REQUEST											"Gatt Server Read Request"
+#define GATT_SERVER_CHARACTERISTIC_STATUS							"Characteristic Status"
+#define GATT_SERVER_ATT_VALUE													"Attribute Value"
+#define GATT_SERVER_READ_REQUEST											"Read Request"
 /* DTM */
 #define TEST_DTM_COMPLETED														"DTM Completed"
 
