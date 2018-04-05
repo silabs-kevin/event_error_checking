@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "retargetserial.h"
 #include "SEGGER_RTT.h"
+#include "event_log.h"
 /* High level defines, needs user to decide */
 #define LOG_LEVEL									LVL_VERBOSE
 #define LOG_PORT									SEGGER_JLINK_VIEWER
@@ -35,6 +36,11 @@
             LOG("%02X ", ((char*)(array_base))[i]);\
 	} while(0)
 
+#define LOGN()											\
+	do{																		\
+		LOG("\r\n");												\
+	}while(0)															\
+
 #define TRY_OUT_ALL_COLORS()				\
 	do{																\
 		for(uint8_t i=1; i<8; i++){			\
@@ -52,7 +58,7 @@
 #define LOGE(_prefix_, ...)				\
 	do{															\
 		if(LOG_LEVEL >=  LVL_ERROR){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_RED"ERROR   -> " _prefix_ "\r\n"RTT_CTRL_RESET, ##__VA_ARGS__);			\
+			LOG(RTT_CTRL_TEXT_BRIGHT_RED"ERROR   -> " _prefix_, ##__VA_ARGS__);			\
 		}																																																\
 }while(0)
 
@@ -60,7 +66,7 @@
 #define LOGW(_prefix_, ...)				\
 	do{															\
 		if(LOG_LEVEL >=  LVL_WARNING){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_YELLOW"WARNING -> " _prefix_ "\r\n"RTT_CTRL_RESET, ##__VA_ARGS__);			\
+			LOG(RTT_CTRL_TEXT_BRIGHT_YELLOW"WARNING -> " _prefix_, ##__VA_ARGS__);			\
 		}																																																\
 }while(0)
 
@@ -68,7 +74,7 @@
 #define LOGI(_prefix_, ...)				\
 	do{															\
 		if(LOG_LEVEL >=  LVL_INFO){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_CYAN"INFO    -> " _prefix_ "\r\n"RTT_CTRL_RESET, ##__VA_ARGS__);			\
+			LOG(RTT_CTRL_TEXT_BRIGHT_CYAN"INFO    -> " _prefix_, ##__VA_ARGS__);			\
 		}																																																\
 }while(0)
 
@@ -76,7 +82,7 @@
 #define LOGD(_prefix_, ...)				\
 	do{															\
 		if(LOG_LEVEL >=  LVL_DEBUG){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_GREEN"DEBUG   -> " _prefix_ "\r\n"RTT_CTRL_RESET, ##__VA_ARGS__);			\
+			LOG(RTT_CTRL_TEXT_BRIGHT_GREEN"DEBUG   -> " _prefix_, ##__VA_ARGS__);			\
 		}																																																\
 }while(0)
 
@@ -84,7 +90,7 @@
 #define LOGV(_prefix_, ...)				\
 	do{															\
 		if(LOG_LEVEL >=  LVL_VERBOSE){	\
-			LOG(RTT_CTRL_RESET"VERBOSE  -> " _prefix_ "\r\n"RTT_CTRL_RESET, ##__VA_ARGS__);			\
+			LOG(RTT_CTRL_RESET"VERBOSE  -> " _prefix_, ##__VA_ARGS__);			\
 		}																																																\
 }while(0)
 
@@ -92,7 +98,7 @@ uint16_t error_checking(uint16_t error_code, uint8_t directly);
 
 #define ERROR_ADDRESSING()						\
 	do{																	\
-			LOGE("  |--> File - %s, Line - %d", __FILE__, __LINE__);			\
+			LOGE("  |--> File - %s, Line - %d\r\n", __FILE__, __LINE__);			\
 	}while(0)
 
 #endif

@@ -119,7 +119,7 @@ void main(void) {
 
 				/* Start general advertising and enable connections. */
 				gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
-				LOGD("ADV started.");
+				LOGD("ADV started.\r\n");
 
 				gecko_cmd_hardware_set_soft_timer(32768*3, 2, 1);
 			break;
@@ -164,7 +164,7 @@ void main(void) {
 				} else {
 					/* Restart advertising after client has disconnected */
 					gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
-					LOGD("ADV started.");
+					LOGD("ADV started.\r\n");
 				}
 			break;
 
