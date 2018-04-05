@@ -6,12 +6,15 @@ void log_out(uint8_t direct, const char *msg){
 		LOG_ERROR_MSG("%s", msg);
 	}else{
 		LOGE("%s", msg);
+		LOG("\r\n");
 	}
 }
 
 uint16_t error_checking(uint16_t error_code, uint8_t directly){
 	if(error_code == bg_err_success){
-		LOG("Success");
+		if(directly){
+			LOG("Success");
+		}
 		return error_code;
 	}
 	switch(error_code){

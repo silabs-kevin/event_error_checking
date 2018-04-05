@@ -40,10 +40,7 @@
 #define USER									1
 
 
-#define EVT_LOG_N()											\
-	do{																		\
-		LOG("\r\n");												\
-	}while(0)															\
+
 
 /**
  * Critical events
