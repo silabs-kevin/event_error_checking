@@ -11,39 +11,39 @@
 #define LOG_PORT									SEGGER_JLINK_VIEWER
 
 #define PORT_VCOM									1
-#define SEGGER_JLINK_VIEWER				2
+#define SEGGER_JLINK_VIEWER							2
 
 #define NO_LOG										0
 #define LVL_ERROR									1
-#define LVL_WARNING								2
+#define LVL_WARNING									2
 #define LVL_INFO									3
 #define LVL_DEBUG									4
-#define LVL_VERBOSE								5
+#define LVL_VERBOSE									5
 
 #if (LOG_PORT == SEGGER_JLINK_VIEWER)
-#define INIT_LOG()							SEGGER_RTT_Init()
+#define INIT_LOG()								SEGGER_RTT_Init()
 #define LOG(...)								SEGGER_RTT_printf(0, __VA_ARGS__)
 #elif (LOG_PORT == PORT_VCOM)
-#define INIT_LOG()							RETARGET_SerialInit()
+#define INIT_LOG()								RETARGET_SerialInit()
 #define LOG(...)								printf(__VA_ARGS__)
 #else
 #define INIT_LOG()
 #define LOG(...)
 #endif
 
-#define UINT8_ARRAY_DUMP(array_base, array_size)				\
-	do {                                                                           \
-        for (int i = 0; i<(array_size); i++)                                       \
-            LOG("%02X ", ((char*)(array_base))[i]);\
+#define UINT8_ARRAY_DUMP(array_base, array_size)							\
+	do {                                                                    \
+        for (int i = 0; i<(array_size); i++)                                \
+            LOG("%02X ", ((char*)(array_base))[i]);							\
 	} while(0)
 
-#define LOGN()											\
+#define LOGN()																\
 	do{																		\
-		LOG("\r\n");												\
-	}while(0)															\
+		LOG("\r\n");														\
+	}while(0)
 
-#define LOG_DIRECT_ERR(_prefix_, ...)				\
-	do{															\
+#define LOG_DIRECT_ERR(_prefix_, ...)										\
+	do{																		\
 			LOG(RTT_CTRL_TEXT_BRIGHT_RED _prefix_, ##__VA_ARGS__);			\
 }while(0)
 
@@ -52,84 +52,84 @@
  */
 
 /* Error */
-#define LOGE(_prefix_, ...)				\
-	do{															\
-		if(LOG_LEVEL >=  LVL_ERROR){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_RED"ERROR   -> " _prefix_, ##__VA_ARGS__);			\
-		}																																																\
+#define LOGE(_prefix_, ...)													\
+	do{																		\
+		if(LOG_LEVEL >=  LVL_ERROR){										\
+			LOG(RTT_CTRL_TEXT_BRIGHT_RED"E] " _prefix_, ##__VA_ARGS__);			\
+		}																	\																															\
 }while(0)
 
 /* Warning */
-#define LOGW(_prefix_, ...)				\
-	do{															\
-		if(LOG_LEVEL >=  LVL_WARNING){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_YELLOW"WARNING -> " _prefix_, ##__VA_ARGS__);			\
-		}																																																\
+#define LOGW(_prefix_, ...)													\
+	do{																		\
+		if(LOG_LEVEL >=  LVL_WARNING){										\
+			LOG(RTT_CTRL_TEXT_BRIGHT_YELLOW"W] " _prefix_, ##__VA_ARGS__);		\
+		}																	\																															\
 }while(0)
 
 /* Information */
-#define LOGI(_prefix_, ...)				\
-	do{															\
-		if(LOG_LEVEL >=  LVL_INFO){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_CYAN"INFO    -> " _prefix_, ##__VA_ARGS__);			\
-		}																																																\
+#define LOGI(_prefix_, ...)													\
+	do{																		\
+		if(LOG_LEVEL >=  LVL_INFO){											\
+			LOG(RTT_CTRL_TEXT_BRIGHT_CYAN"I] " _prefix_, ##__VA_ARGS__);		\
+		}																	\																															\
 }while(0)
 
 /* DEBUG */
-#define LOGD(_prefix_, ...)				\
-	do{															\
-		if(LOG_LEVEL >=  LVL_DEBUG){	\
-			LOG(RTT_CTRL_TEXT_BRIGHT_GREEN"DEBUG   -> " _prefix_, ##__VA_ARGS__);			\
-		}																																																\
+#define LOGD(_prefix_, ...)													\
+	do{																		\
+		if(LOG_LEVEL >=  LVL_DEBUG){										\
+			LOG(RTT_CTRL_TEXT_BRIGHT_GREEN"D] " _prefix_, ##__VA_ARGS__);		\
+		}																	\																															\
 }while(0)
 
 /* Vobase */
-#define LOGV(_prefix_, ...)				\
-	do{															\
-		if(LOG_LEVEL >=  LVL_VERBOSE){	\
-			LOG(RTT_CTRL_RESET"VERBOSE  -> " _prefix_, ##__VA_ARGS__);			\
-		}																																																\
+#define LOGV(_prefix_, ...)													\
+	do{																		\
+		if(LOG_LEVEL >=  LVL_VERBOSE){										\
+			LOG(RTT_CTRL_RESET"V] " _prefix_, ##__VA_ARGS__);		\
+		}																	\																															\
 }while(0)
 
 /* Address error - file and line */
-#define ERROR_ADDRESSING()						\
-	do{																	\
-			LOGE("  |--> File - %s, Line - %d\r\n", __FILE__, __LINE__);			\
+#define ERROR_ADDRESSING()													\
+	do{																		\
+			LOGE("  |--> File - %s, Line - %d\r\n", __FILE__, __LINE__);	\
 	}while(0)
 
 /**
  * Event Log Part
  */
-#define EVENT_LOG_LEVEL				VERBOSE
+#define EVENT_LOG_LEVEL							VERBOSE
 
-#define NO_EVENT_LOG					0
-#define CRITICAL							1
-#define IMPORTANT							2
-#define VERBOSE								3
+#define NO_EVENT_LOG							0
+#define CRITICAL								1
+#define IMPORTANT								2
+#define VERBOSE									3
 
-#define CRITICAL_COLOR				RTT_CTRL_TEXT_BRIGHT_RED
-#define IMPORTANT_COLOR				RTT_CTRL_TEXT_BRIGHT_YELLOW
-#define VERBOSE_COLOR					RTT_CTRL_RESET
+#define CRITICAL_COLOR							RTT_CTRL_TEXT_BRIGHT_RED
+#define IMPORTANT_COLOR							RTT_CTRL_TEXT_BRIGHT_YELLOW
+#define VERBOSE_COLOR							RTT_CTRL_RESET
 
-#define FUNCTION							""
-#define EVT_CATEGORY					""
+#define FUNCTION								""
+#define EVT_CATEGORY							""
 
 /*FUNCTION Macro doesn't be used yet */
-#define EVT_CRITICAL_PREFIX		CRITICAL_COLOR FUNCTION EVT_CATEGORY
-#define EVT_IMPORTANT_PREFIX	IMPORTANT_COLOR FUNCTION EVT_CATEGORY
-#define EVT_VERBOSE_PREFIX		VERBOSE_COLOR FUNCTION EVT_CATEGORY
+#define EVT_CRITICAL_PREFIX						CRITICAL_COLOR FUNCTION EVT_CATEGORY
+#define EVT_IMPORTANT_PREFIX					IMPORTANT_COLOR FUNCTION EVT_CATEGORY
+#define EVT_VERBOSE_PREFIX						VERBOSE_COLOR FUNCTION EVT_CATEGORY
 
 #define COEX									1
 #define DFU										1
-#define ENDPOINT							1
-#define PSTORE								1
+#define ENDPOINT								1
+#define PSTORE									1
 #define	GATT									1
-#define GATT_SERVER						1
-#define HARDWARE							1
-#define LE_CONNECTION					1
-#define LE_GAP								1
+#define GATT_SERVER								1
+#define HARDWARE								1
+#define LE_CONNECTION							1
+#define LE_GAP									1
 #define	LE_SM									1
-#define SYSTEM								1
+#define SYSTEM									1
 #define TEST									1
 #define USER									1
 
