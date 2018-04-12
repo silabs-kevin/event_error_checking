@@ -152,8 +152,8 @@ void log_events(struct gecko_cmd_packet* evt){
 #endif
 
     default:
-    	EVT_LOG_V(COMMANDS_NOT_ADDED, "Header = 0x%08x", BGLIB_MSG_ID(evt->header));
-    	LOGN();
+//    	EVT_LOG_V(COMMANDS_NOT_ADDED, "Header = 0x%08x", BGLIB_MSG_ID(evt->header));
+//    	LOGN();
       break;
   }
 }

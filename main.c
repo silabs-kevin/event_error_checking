@@ -166,6 +166,10 @@ void main(void) {
 					gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
 					LOGD("ADV started.\r\n");
 				}
+
+				if(error_checking(gecko_cmd_le_connection_get_rssi(1)->result, 0)){
+					ERROR_ADDRESSING();
+				}
 			break;
 
 				/* Events related to OTA upgrading
