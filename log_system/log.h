@@ -56,7 +56,7 @@
 	do{																		\
 		if(LOG_LEVEL >=  LVL_ERROR){										\
 			LOG(RTT_CTRL_TEXT_BRIGHT_RED"E] " _prefix_, ##__VA_ARGS__);			\
-		}																	\																															\
+		}																																																\
 }while(0)
 
 /* Warning */
@@ -64,7 +64,7 @@
 	do{																		\
 		if(LOG_LEVEL >=  LVL_WARNING){										\
 			LOG(RTT_CTRL_TEXT_BRIGHT_YELLOW"W] " _prefix_, ##__VA_ARGS__);		\
-		}																	\																															\
+		}																																																\
 }while(0)
 
 /* Information */
@@ -72,7 +72,7 @@
 	do{																		\
 		if(LOG_LEVEL >=  LVL_INFO){											\
 			LOG(RTT_CTRL_TEXT_BRIGHT_CYAN"I] " _prefix_, ##__VA_ARGS__);		\
-		}																	\																															\
+		}																																																\
 }while(0)
 
 /* DEBUG */
@@ -80,15 +80,15 @@
 	do{																		\
 		if(LOG_LEVEL >=  LVL_DEBUG){										\
 			LOG(RTT_CTRL_TEXT_BRIGHT_GREEN"D] " _prefix_, ##__VA_ARGS__);		\
-		}																	\																															\
+		}																																																\
 }while(0)
 
 /* Vobase */
 #define LOGV(_prefix_, ...)													\
 	do{																		\
 		if(LOG_LEVEL >=  LVL_VERBOSE){										\
-			LOG(RTT_CTRL_RESET"V] " _prefix_, ##__VA_ARGS__);		\
-		}																	\																															\
+			LOG(RTT_CTRL_RESET"V] " _prefix_, ##__VA_ARGS__);				\
+		}																																																\
 }while(0)
 
 /* Address error - file and line */

@@ -91,7 +91,7 @@ void main(void)
   gecko_init(&config);
 
   INIT_LOG();
-  LOGI(RTT_CTRL_CLEAR"Compiled  %s %s\n", (uint32_t)__DATE__, (uint32_t)__TIME__);
+  LOGI(RTT_CTRL_CLEAR"Project was compiled - %s %s\n", (uint32_t)__DATE__, (uint32_t)__TIME__);
 
   while (1) {
     /* Event pointer for handling events */
