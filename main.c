@@ -39,7 +39,6 @@
 #endif
 
 #include "log.h"
-#include "event_log.h"
 /***********************************************************************************************//**
  * @addtogroup Application
  * @{
@@ -80,6 +79,7 @@ uint8_t aaa[5];
 /**
  * @brief  Main function
  */
+
 void main(void) {
 	// Initialize device
 	initMcu();
