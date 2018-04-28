@@ -139,7 +139,7 @@
 #define EVT_LOG_C(_evt_name_, _attached_, ...)				\
 	do{																									\
 		if(EVENT_LOG_LEVEL >= CRITICAL){									\
-			LOG(EVT_CRITICAL_PREFIX "<" _evt_name_ "> - " _attached_, ##__VA_ARGS__);	\
+			LOG(EVT_CRITICAL_PREFIX _evt_name_ _attached_, ##__VA_ARGS__);	\
 		}																									\
 	}while(0)
 
@@ -149,7 +149,7 @@
 #define EVT_LOG_I(_evt_name_, _attached_, ...)				\
 	do{																									\
 		if(EVENT_LOG_LEVEL >= IMPORTANT){									\
-			LOG(EVT_IMPORTANT_PREFIX "<" _evt_name_ "> - " _attached_, ##__VA_ARGS__);	\
+			LOG(EVT_IMPORTANT_PREFIX _evt_name_ _attached_, ##__VA_ARGS__);	\
 		}																									\
 	}while(0)
 
@@ -159,7 +159,7 @@
 #define EVT_LOG_V(_evt_name_, _attached_, ...)				\
 	do{																									\
 		if(EVENT_LOG_LEVEL >= VERBOSE){									\
-			LOG(EVT_VERBOSE_PREFIX "<" _evt_name_ "> - " _attached_, ##__VA_ARGS__);	\
+			LOG(EVT_VERBOSE_PREFIX _evt_name_ _attached_, ##__VA_ARGS__);	\
 		}																									\
 	}while(0)
 
@@ -186,5 +186,5 @@ void log_events(const struct gecko_cmd_packet* evt);
 			ERROR_ADDRESSING();		\
 		}}while(0)
 
-
+#define SURROUNDING(x)					"<" x "> - "
 #endif

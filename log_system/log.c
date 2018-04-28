@@ -1,23 +1,24 @@
 #include "log.h"
 
 /* System */
-#define SYSTEM_BOOT_EVT																"Boot"
-#define EXSYSTEM_TERNAL_SIGNAL_EVT										"External signal"
+#define SYSTEM_BOOT_EVT																SURROUNDING("Boot")
+#define EXSYSTEM_TERNAL_SIGNAL_EVT													SURROUNDING("External signal")
 /* Bluetooth LE Connection */
-#define	LE_CONNECTION_OPEN_EVT 												"Opened"
-#define LE_CONNECTION_CLOSED_EVT											"Closed"
-#define LE_CONNECTION_UPDATE_EVT											"Parameters Updated"
-#define LE_CONNECTION_RSSI														"RSSI"
+#define	LE_CONNECTION_OPEN_EVT 														SURROUNDING("Opened")
+#define LE_CONNECTION_CLOSED_EVT													SURROUNDING("Closed")
+#define LE_CONNECTION_UPDATE_EVT													SURROUNDING("Parameters Updated")
+#define LE_CONNECTION_RSSI															SURROUNDING("RSSI")
 /* Gatt Server */
-#define GATT_SERVER_CHARACTERISTIC_STATUS							"Characteristic Status"
-#define GATT_SERVER_ATT_VALUE													"Attribute Value"
-#define GATT_SERVER_READ_REQUEST											"Read Request"
+#define GATT_SERVER_CHARACTERISTIC_STATUS											SURROUNDING("Characteristic Status")
+#define GATT_SERVER_ATT_VALUE														SURROUNDING("Attribute Value")
+#define GATT_SERVER_READ_REQUEST													SURROUNDING("Read Request")
 /* DTM */
-#define TEST_DTM_COMPLETED														"DTM Completed"
+#define TEST_DTM_COMPLETED															SURROUNDING("DTM Completed")
 
-#define COMMANDS_NOT_ADDED														"Command not added"
-#define NO_INFO																				""
+#define COMMANDS_NOT_ADDED															SURROUNDING("Command not added")
 
+#define NO_INFO																		""
+#define FOLLOWINGS																	"   |----"
 void log_events(const struct gecko_cmd_packet* evt) {
 	/* Handle events */
 	switch (BGLIB_MSG_ID(evt->header)) {
@@ -28,7 +29,7 @@ void log_events(const struct gecko_cmd_packet* evt) {
 			EVT_LOG_C(SYSTEM_BOOT_EVT, NO_INFO);
 			LOGN()
 			;
-			EVT_LOG_V(SYSTEM_BOOT_EVT, "Major = 0x%04x, Minor = 0x%04x, Patch = 0x%04x, Build = %ld, Bootloader = 0x%08x, Hw = 0x%04x, Hash = 0x%08x", evt->data.evt_system_boot.major,
+			EVT_LOG_V(FOLLOWINGS, "Major = 0x%04x, Minor = 0x%04x, Patch = 0x%04x, Build = %ld, Bootloader = 0x%08x, Hw = 0x%04x, Hash = 0x%08x", evt->data.evt_system_boot.major,
 					evt->data.evt_system_boot.minor, evt->data.evt_system_boot.patch, evt->data.evt_system_boot.build, evt->data.evt_system_boot.bootloader, evt->data.evt_system_boot.hw,
 					evt->data.evt_system_boot.hash);
 			LOGN()
@@ -49,11 +50,11 @@ void log_events(const struct gecko_cmd_packet* evt) {
 			EVT_LOG_C(LE_CONNECTION_OPEN_EVT, "Connection Handle = 0x%02x", evt->data.evt_le_connection_opened.connection);
 			LOGN()
 			;
-			EVT_LOG_I(LE_CONNECTION_OPEN_EVT, "Peer address = ");
+			EVT_LOG_I(FOLLOWINGS, "Peer address = ");
 			UINT8_ARRAY_DUMP(evt->data.evt_le_connection_opened.address.addr, 6);
 			LOGN()
 			;
-			EVT_LOG_V(LE_CONNECTION_OPEN_EVT, "Role = %s, Bonding handle = %d, advertiser = %d", evt->data.evt_le_connection_opened.master == 1 ? "Master" : "Slave",
+			EVT_LOG_V(FOLLOWINGS, "Role = %s, Bonding handle = %d, advertiser = %d", evt->data.evt_le_connection_opened.master == 1 ? "Master" : "Slave",
 					evt->data.evt_le_connection_opened.bonding, evt->data.evt_le_connection_opened.advertiser);
 			LOGN()
 			;
@@ -132,7 +133,7 @@ void log_events(const struct gecko_cmd_packet* evt) {
 			error_checking(evt->data.evt_test_dtm_completed.result, 1);
 			LOGN()
 			;
-			EVT_LOG_I(TEST_DTM_COMPLETED, "Number of Packets = %d", evt->data.evt_test_dtm_completed.number_of_packets);
+			EVT_LOG_I(FOLLOWINGS, "Number of Packets = %d", evt->data.evt_test_dtm_completed.number_of_packets);
 			LOGN()
 			;
 			break;
