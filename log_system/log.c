@@ -18,7 +18,7 @@
 #define COMMANDS_NOT_ADDED														"Command not added"
 #define NO_INFO																				""
 
-void log_events(struct gecko_cmd_packet* evt) {
+void log_events(const struct gecko_cmd_packet* evt) {
 	/* Handle events */
 	switch (BGLIB_MSG_ID(evt->header)) {
 #if (SYSTEM == 1)

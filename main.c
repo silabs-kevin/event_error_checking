@@ -75,7 +75,7 @@ static const gecko_configuration_t config = {
 // Flag for indicating DFU Reset must be performed
 uint8_t boot_to_dfu = 0;
 uint8_t connection = 0;
-uint8_t aaa[5];
+uint8_t demo_char_buf[5];
 /**
  * @brief  Main function
  */
@@ -92,7 +92,7 @@ void main(void) {
 	gecko_init(&config);
 
 	INIT_LOG();
-	LOGI(RTT_CTRL_CLEAR"Compiled  %s %s\n", (uint32_t)__DATE__, (uint32_t)__TIME__);
+	LOGI(RTT_CTRL_CLEAR"------------Compiled------------ %s %s\n", (uint32_t)__DATE__, (uint32_t)__TIME__);
 
 	while (1) {
 		/* Event pointer for handling events */
@@ -107,70 +107,63 @@ void main(void) {
 			 * Do not call any stack commands before receiving the boot event.
 			 * Here the system is set to start advertising immediately after boot procedure. */
 			case gecko_evt_system_boot_id:
-				memset(aaa, 0, 5);
-//      	TRY_OUT_ALL_COLORS();
-//      	LOGD("Booted.");
+				memset(demo_char_buf, 0, 5);
 				/* Set advertising parameters. 100ms advertisement interval.
 				 * The first parameter is advertising set handle
 				 * The next two parameters are minimum and maximum advertising interval, both in
 				 * units of (milliseconds * 1.6).
 				 * The last two parameters are duration and maxevents left as default. */
-				gecko_cmd_le_gap_set_advertise_timing(0, 160, 160, 0, 0);
-
+				SE_CALL(gecko_cmd_le_gap_set_advertise_timing(0, 160, 160, 0, 0));
 				/* Start general advertising and enable connections. */
-				gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
-				LOGD("ADV started.\r\n");
-
-				gecko_cmd_hardware_set_soft_timer(32768*3, 2, 1);
-			break;
+				SE_CALL(gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable));
+				LOGD("Advertising started.\r\n");
+				break;
 
 			case gecko_evt_gatt_server_characteristic_status_id:
 				if (evt->data.evt_gatt_server_characteristic_status.characteristic == gattdb_indicate && evt->data.evt_gatt_server_characteristic_status.status_flags == 1) {
+					uint32_t ticks;
 					if (evt->data.evt_gatt_server_characteristic_status.client_config_flags == 2) {
-						gecko_cmd_hardware_set_soft_timer(32768 * 3, 1, 0);
+						ticks = 32768 * 3;
 					} else {
-						gecko_cmd_hardware_set_soft_timer(0, 1, 0);
+						ticks = 0;
 					}
+					SE_CALL(gecko_cmd_hardware_set_soft_timer(ticks, 1, 0));
 				}
-			break;
+				break;
 
 			case gecko_evt_gatt_server_user_read_request_id:
-				gecko_cmd_gatt_server_send_user_read_response(connection, gattdb_user, 0, 5, aaa);
-			break;
+				SE_CALL(gecko_cmd_gatt_server_send_user_read_response(connection, gattdb_user, 0, 5, demo_char_buf));
+				break;
 
 			case gecko_evt_hardware_soft_timer_id:
 				switch (evt->data.evt_hardware_soft_timer.handle) {
 					case 1: {
 						struct gecko_msg_system_get_random_data_rsp_t *ret = gecko_cmd_system_get_random_data(1);
-						gecko_cmd_gatt_server_send_characteristic_notification(0xFF, gattdb_indicate, 1, ret->data.data);
+						SE_CALL(ret);
+						SE_CALL(gecko_cmd_gatt_server_send_characteristic_notification(0xFF, gattdb_indicate, 1, ret->data.data));
 					}
-					break;
+						break;
 					case 2:
 						break;
 					default:
-					break;
+						break;
 				}
-			break;
+				break;
 			case gecko_evt_le_connection_opened_id:
 				connection = evt->data.evt_le_connection_opened.connection;
-			break;
+				break;
 			case gecko_evt_le_connection_closed_id:
-//      	LOGE("Connection dropped. Reason = 0x%04x", evt->data.evt_le_connection_closed.reason);
-//      	error_checking(evt->data.evt_le_connection_closed.reason);
 				/* Check if need to boot to dfu mode */
 				if (boot_to_dfu) {
 					/* Enter to DFU OTA mode */
 					gecko_cmd_system_reset(2);
 				} else {
 					/* Restart advertising after client has disconnected */
-					gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable);
-					LOGD("ADV started.\r\n");
+					SE_CALL(gecko_cmd_le_gap_start_advertising(0, le_gap_general_discoverable, le_gap_connectable_scannable));
+					LOGD("Disconnected, Advertising re-started.\r\n");
 				}
-
-				if(error_checking(gecko_cmd_le_connection_get_rssi(1)->result, 0)){
-					ERROR_ADDRESSING();
-				}
-			break;
+				SE_CALL(gecko_cmd_le_connection_get_rssi(1));
+				break;
 
 				/* Events related to OTA upgrading
 				 ----------------------------------------------------------------------------- */
@@ -189,13 +182,13 @@ void main(void) {
 					/* Close connection to enter to DFU OTA mode */
 					gecko_cmd_le_connection_close(evt->data.evt_gatt_server_user_write_request.connection);
 				} else {
-					memcpy(aaa, evt->data.evt_gatt_server_user_write_request.value.data, 5);
+					memcpy(demo_char_buf, evt->data.evt_gatt_server_user_write_request.value.data, 5);
 					gecko_cmd_gatt_server_send_user_write_response(connection, gattdb_user, 0);
 				}
-			break;
+				break;
 
 			default:
-			break;
+				break;
 		}
 	}
 }

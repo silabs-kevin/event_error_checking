@@ -178,5 +178,13 @@
  * Function declarations
  */
 uint16_t error_checking(uint16_t error_code, uint8_t directly);
-void log_events(struct gecko_cmd_packet* evt);
+void log_events(const struct gecko_cmd_packet* evt);
+
+#define SE_CALL(x)						\
+	do{									\
+		if (error_checking(x->result, 0)) {		\
+			ERROR_ADDRESSING();		\
+		}}while(0)
+
+
 #endif
